@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Workshop 2</title>
+</head>
+<body>
+
+<h1>Workshop 2 – JavaScript BOM & DOM</h1>
+
+<button onclick="exercise1()">Exercise 1</button>
+<button onclick="exercise2()">Exercise 2</button>
+<button onclick="exercise3()">Exercise 3</button>
+<button onclick="exercise4()">Exercise 4</button>
+<button onclick="exercise5()">Exercise 5</button>
+
+<hr>
+<div id="output"></div>
+
+<script>
+    const output = document.getElementById("output");
+
+    function exercise1() {
+        output.innerHTML = ""; 
+        output.innerHTML += "<p><i>\"If I had nine hours to chop down a tree, I'd spend the first six sharpening my ax.\"</i></p>";
+        output.innerHTML += "<p><b>-- Abraham Lincoln</b></p>";
+    }
+
+    function exercise2() {
+        output.innerHTML = "";
+        for (let i = 1; i <= 50; i++) {
+            output.innerHTML += "This is line " + i + "<br>";
+        }
+    }
+
+    function exercise3() {
+        if (navigator.userAgent.toLowerCase().indexOf("mozilla") > -1 &&
+            navigator.userAgent.toLowerCase().indexOf("chrome") === -1) {
+            window.location.href = "http://www.mozilla.org";
+        } else {
+            window.location.href = "https://www.google.com";
+        }
+    }
+
+    function exercise4() {
+        output.innerHTML = "";
+        let isStudent = confirm("Are you a student?");
+        if (isStudent) {
+            output.innerHTML = "<h2>Welcome student</h2>";
+        } else {
+            output.innerHTML = "<h2>Sorry, this page is for students only</h2>";
+        }
+    }
+
+    function exercise5() {
+        output.innerHTML = "";
+        var images = [
+            "http://farm4.staticflickr.com/3691/11268502654_f28f05966c_m.jpg",
+            "http://farm1.staticflickr.com/33/45336904_1aef569b30_n.jpg",
+            "http://farm6.staticflickr.com/5211/5384592886_80a512e2c9.jpg"
+        ];
+
+        output.innerHTML += "<img src='" + images[0] + "' alt='Image from array'><br>";
+
+        let randomIndex = Math.floor(Math.random() * images.length);
+        output.innerHTML += "<img src='" + images[randomIndex] + "' alt='Random image'>";
+    }
+
+</script>
+
+</body>
+</html>
