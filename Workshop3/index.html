@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Workshop 3 – JavaScript Events</title>
+    <style>
+        #coordinates {
+            width: 300px;
+            height: 150px;
+            background-color: lightgray;
+            border: 1px solid black;
+            margin-top: 10px;
+        }
+        textarea {
+            width: 300px;
+            height: 80px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Workshop 3 – JavaScript Events</h1>
+
+
+<h2>Exercise 1</h2>
+<button onclick="buttonClicked()">Click me</button>
+<button onclick="showTable()">Show table</button>
+<button onclick="getGeolocation()">Geolocation</button>
+
+<div id="tableOutput"></div>
+<div id="geoOutput"></div>
+
+<hr>
+
+
+<h2 id="exercise2">Exercise 2</h2>
+
+<hr>
+
+
+<h2>Exercise 3</h2>
+<form onsubmit="return checkForm(event)">
+    <textarea id="textdata"
+              onfocus="showHint()"
+              onkeydown="countKeys()"></textarea><br>
+    <span id="hint" style="color: blue;"></span><br>
+    <span id="charcount" style="color: green;"></span><br>
+    <button type="submit">Send me</button>
+</form>
+
+<hr>
+
+
+<h2>Exercise 4</h2>
+<div id="coordinates" onmousemove="showMouseCoords(event)">
+    <h2 id="coords">Move your mouse here</h2>
+</div>
+
+<script>
+
+    function buttonClicked() {
+        const currentDate = new Date();
+        alert("You clicked me! " + currentDate);
+    }
+
+    function showTable() {
+        const output = document.getElementById("tableOutput");
+        output.innerHTML = `
+            <table border="1" cellpadding="5">
+                <tr><th>Name</th><th>Position</th><th>Salary</th></tr>
+                <tr><td>Tiger Nixon</td><td>System Architect</td><td>$320,800</td></tr>
+                <tr><td>Garrett Winters</td><td>Accountant</td><td>$170,750</td></tr>
+                <tr><td>Ashton Cox</td><td>Junior Technical Author</td><td>$86,000</td></tr>
+                <tr><td>Cedric Kelly</td><td>Senior Javascript Developer</td><td>$433,060</td></tr>
+                <tr><td>Airi Satou</td><td>Accountant</td><td>$162,700</td></tr>
+            </table>`;
+    }
+
+    function getGeolocation() {
+        const geoOutput = document.getElementById("geoOutput");
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                console.log("Latitude: " + lat + ", Longitude: " + lon);
+                geoOutput.innerHTML = "Your coordinates: " + lat + ", " + lon;
+
+                window.location.href = `https://www.google.com/maps?q=${lat},${lon}`;
+            });
+        } else {
+            geoOutput.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+
+
+    const ex2heading = document.getElementById("exercise2");
+    ex2heading.onmouseover = function() {
+        console.log("Stepped over my a mouse!");
+    }
+    ex2heading.onmouseleave = function() {
+        alert("Bye bye mouse!");
+    }
+
+
+    let keyCount = 0;
+
+    function showHint() {
+        document.getElementById("hint").innerText = "Please fill in the form with proper data.";
+        document.getElementById("textdata").style.backgroundColor = "#e0f7fa";
+    }
+
+    function countKeys() {
+        keyCount++;
+        document.getElementById("charcount").innerText = "Key presses: " + keyCount;
+    }
+
+    function checkForm(event) {
+        event.preventDefault();
+        const textValue = document.getElementById("textdata").value;
+        if (textValue.trim() === "") {
+            alert("Textarea is empty! Please fill in the form.");
+            return false;
+        } else {
+            alert("Form submitted successfully!");
+            return true;
+        }
+    }
+
+    function showMouseCoords(event) {
+        console.log("Mouse X: " + event.clientX + ", Mouse Y: " + event.clientY);
+        document.getElementById("coords").innerText =
+            "Mouse X: " + event.clientX + " | Mouse Y: " + event.clientY;
+    }
+</script>
+
+</body>
+</html>
