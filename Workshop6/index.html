@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <title>Workshop6</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        label { display: block; margin-top: 10px; }
+        #sessionData { border: 1px solid #ccc; padding: 10px; margin-top: 20px; }
+        button { margin-top: 15px; padding: 8px 15px; cursor: pointer; }
+        fieldset { max-width: 350px; }
+    </style>
+</head>
+
+<body onload="loadLocalData()">
+
+    <h1>Tehtävä 1: Lomaketietojen tallennus LocalStorageen</h1>
+
+    <fieldset>
+        <legend>Varauslomake</legend>
+
+        <label for="destination">Kohde:</label>
+        <input type="text" id="destination" name="destination">
+
+        <label for="arrival">Saapumispäivä:</label>
+        <input type="date" id="arrival" name="arrival">
+
+        <p>Palvelut:</p>
+        <label><input type="checkbox" name="services" value="Internet"> Internet</label>
+        <label><input type="checkbox" name="services" value="Ilmastointi"> Ilmastointi</label>
+        <label><input type="checkbox" name="services" value="Minibaari"> Minibaari</label>
+        <label><input type="checkbox" name="services" value="Auton vuokraus"> Auton vuokraus</label>
+        <label><input type="checkbox" name="services" value="Sauna"> Sauna</label>
+
+        <button onclick="saveToLocal()">Tallenna LocalStorageen</button>
+    </fieldset>
+
+    <h2>Tehtävä 2: Tallennetun datan lataus</h2>
+    <div id="sessionData">Tallennettu data näkyy täällä!</div>
+
+    <h2>Tehtävä 3: SessionStorage-esimerkki</h2>
+
+    <fieldset>
+        <legend>Varauslomake (SessionStorage)</legend>
+
+        <label for="destination2">Kohde:</label>
+        <input type="text" id="destination2" name="destination2">
+
+        <label for="arrival2">Saapumispäivä:</label>
+        <input type="date" id="arrival2" name="arrival2">
+
+        <p>Palvelut:</p>
+        <label><input type="checkbox" name="services2" value="Internet"> Internet</label>
+        <label><input type="checkbox" name="services2" value="Ilmastointi"> Ilmastointi</label>
+        <label><input type="checkbox" name="services2" value="Minibaari"> Minibaari</label>
+        <label><input type="checkbox" name="services2" value="Auton vuokraus"> Auton vuokraus</label>
+        <label><input type="checkbox" name="services2" value="Sauna"> Sauna</label>
+
+        <button onclick="saveToSession()">Tallenna SessionStorageen</button>
+    </fieldset>
+
+    <div id="sessionData2">SessionStorage-data näkyy täällä!</div>
+
+    <script>
+        function saveToLocal() {
+            const destination = document.getElementById("destination").value;
+            const arrival = document.getElementById("arrival").value;
+
+            const services = [];
+            document.querySelectorAll('input[name="services"]:checked').forEach(item => {
+                services.push(item.value);
+            });
+
+            const bookingData = {
+                destination,
+                arrival,
+                services
+            };
+
+            localStorage.setItem("bookingData", JSON.stringify(bookingData));
+            alert("Tiedot tallennettu LocalStorageen!");
+            loadLocalData();
+        }
+
+        function loadLocalData() {
+            const dataDiv = document.getElementById("sessionData");
+            const saved = localStorage.getItem("bookingData");
+
+            if (saved) {
+                const booking = JSON.parse(saved);
+                dataDiv.innerHTML = `
+                    <strong>Kohde:</strong> ${booking.destination || "-"} <br>
+                    <strong>Saapumispäivä:</strong> ${booking.arrival || "-"} <br>
+                    <strong>Palvelut:</strong> ${booking.services.join(", ") || "-"}
+                `;
+            } else {
+                dataDiv.innerHTML = "Ei tallennettua dataa.";
+            }
+        }
+
+        function saveToSession() {
+            const destination = document.getElementById("destination2").value;
+            const arrival = document.getElementById("arrival2").value;
+
+            const services = [];
+            document.querySelectorAll('input[name="services2"]:checked').forEach(item => {
+                services.push(item.value);
+            });
+
+            const bookingData = {
+                destination,
+                arrival,
+                services
+            };
+
+            sessionStorage.setItem("sessionBooking", JSON.stringify(bookingData));
+            alert("Tiedot tallennettu SessionStorageen!");
+            loadSessionData();
+        }
+
+        function loadSessionData() {
+            const dataDiv = document.getElementById("sessionData2");
+            const saved = sessionStorage.getItem("sessionBooking");
+
+            if (saved) {
+                const booking = JSON.parse(saved);
+                dataDiv.innerHTML = `
+                    <strong>Kohde:</strong> ${booking.destination || "-"} <br>
+                    <strong>Saapumispäivä:</strong> ${booking.arrival || "-"} <br>
+                    <strong>Palvelut:</strong> ${booking.services.join(", ") || "-"}
+                `;
+            } else {
+                dataDiv.innerHTML = "Ei tallennettua SessionStorage-dataa.";
+            }
+        }
+
+        // Lataa SessionStorage automaattisesti
+        window.onload = () => {
+            loadLocalData();
+            loadSessionData();
+        };
+    </script>
+</body>
+</html>
